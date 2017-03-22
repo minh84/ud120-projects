@@ -24,7 +24,26 @@ features_train, features_test, labels_train, labels_test = preprocess()
 
 #########################################################
 ### your code goes here ###
+from sklearn.svm import SVC
+from sklearn.metrics import accuracy_score
+import numpy as np
+N = len(features_train)//100
 
-#########################################################
+for C in 10.0**np.arange(4,5):
+    svc = SVC(C, kernel='rbf')
+    start = time()
+
+    # only use 1% of data to train
+    print ('------------------------------')
+    print 'Fitting with C: {:>10.1f}'.format(C)
+
+    svc.fit(features_train[:], labels_train[:])
+    print 'Training time:    {:>10.5f}s'.format(time() - start)
+
+    start = time()
+    pred = svc.predict(features_test)
+    print 'Predicting time:  {:>10.5f}s'.format(time() - start)
+    print 'Test accuracy =   {:>10.5f}\n'.format(accuracy_score(pred, labels_test))
+    #########################################################
 
 

@@ -24,8 +24,20 @@ features_train, features_test, labels_train, labels_test = preprocess()
 
 #########################################################
 ### your code goes here ###
+from sklearn.metrics import accuracy_score
+from sklearn.tree import DecisionTreeClassifier
 
+dt = DecisionTreeClassifier()
 
+start = time()
+dt.fit(features_train, labels_train)
+print 'Training time:    {:>10.5f}s'.format(time() - start)
+
+start = time()
+pred = dt.predict(features_test)
+print 'Predicting time:  {:>10.5f}s'.format(time() - start)
+
+print 'Test accuracy =   {:>10.5f}'.format(accuracy_score(pred, labels_test))
 #########################################################
 
 

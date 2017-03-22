@@ -30,15 +30,25 @@ plt.show()
 
 ### your code here!  name your classifier object clf if you want the 
 ### visualization code (prettyPicture) to show you the decision boundary
+from sklearn.metrics import accuracy_score
+from sklearn.cluster import KMeans
+from sklearn.ensemble import AdaBoostClassifier, RandomForestClassifier
+from sklearn.tree import DecisionTreeClassifier
 
+# clf = KMeans(n_clusters=2, n_init=20)
+# clf = AdaBoostClassifier(DecisionTreeClassifier(max_depth=1),
+#                          algorithm="SAMME",
+#                          n_estimators=200)
 
+clf = RandomForestClassifier(max_depth=None, n_estimators=5, min_samples_split=2, random_state=0)
 
+clf.fit(features_train, labels_train)
 
-
-
-
+pred = clf.predict(features_test)
+print 'Test accuracy =   {:>10.5f}'.format(accuracy_score(pred, labels_test))
 
 try:
     prettyPicture(clf, features_test, labels_test)
+    plt.show()
 except NameError:
     pass
