@@ -19,12 +19,12 @@ bumpy_slow = [features_train[ii][1] for ii in range(0, len(features_train)) if l
 #### initial visualization
 plt.xlim(0.0, 1.0)
 plt.ylim(0.0, 1.0)
-plt.scatter(bumpy_fast, grade_fast, color = "b", label="fast")
-plt.scatter(grade_slow, bumpy_slow, color = "r", label="slow")
-plt.legend()
-plt.xlabel("bumpiness")
-plt.ylabel("grade")
-plt.show()
+# plt.scatter(bumpy_fast, grade_fast, color = "b", label="fast")
+# plt.scatter(grade_slow, bumpy_slow, color = "r", label="slow")
+# plt.legend()
+# plt.xlabel("bumpiness")
+# plt.ylabel("grade")
+# plt.show()
 ################################################################################
 
 
@@ -35,20 +35,22 @@ from sklearn.cluster import KMeans
 from sklearn.ensemble import AdaBoostClassifier, RandomForestClassifier
 from sklearn.tree import DecisionTreeClassifier
 
-# clf = KMeans(n_clusters=2, n_init=20)
-# clf = AdaBoostClassifier(DecisionTreeClassifier(max_depth=1),
-#                          algorithm="SAMME",
-#                          n_estimators=200)
+# clf = KMeans(n_clusters=2, n_init=10)
+clf = AdaBoostClassifier(DecisionTreeClassifier(max_depth=1),
+                         algorithm="SAMME",
+                         n_estimators=200)
 
-clf = RandomForestClassifier(max_depth=None, n_estimators=5, min_samples_split=2, random_state=0)
+# clf = RandomForestClassifier(max_depth=None,
+#                              n_estimators=50,
+#                              min_samples_split=50)
 
 clf.fit(features_train, labels_train)
 
 pred = clf.predict(features_test)
 print 'Test accuracy =   {:>10.5f}'.format(accuracy_score(pred, labels_test))
 
-try:
-    prettyPicture(clf, features_test, labels_test)
-    plt.show()
-except NameError:
-    pass
+# try:
+#     prettyPicture(clf, features_test, labels_test)
+#     plt.show()
+# except NameError:
+#     pass
