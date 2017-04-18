@@ -43,16 +43,48 @@ data_dict = pickle.load( open("../final_project/final_project_dataset.pkl", "r")
 ### there's an outlier--remove it! 
 data_dict.pop("TOTAL", 0)
 
+max_min_scale = []
+for fk in ['salary', 'exercised_stock_options', 'total_payments']:
+    max = 0
+    min = 1e6
+    max_k = ''
+    min_k = ''
+    fk = 'salary'
+    for k, v in data_dict.items():
+        if str(v[fk]) == 'NaN':
+            continue
+        if v[fk] < min:
+            min_k = k
+            min = v[fk]
+        if v[fk] > max:
+            max_k = k
+            max = v[fk]
+
+    print (min_k, max_k)
+    print (data_dict[min_k][fk])
+    print (data_dict[max_k][fk])
+    max_min_scale.append((data_dict[min_k][fk], data_dict[max_k][fk]))
 
 ### the input features we want to use 
 ### can be any key in the person-level dictionary (salary, director_fees, etc.) 
 feature_1 = "salary"
 feature_2 = "exercised_stock_options"
+feature_3 = "total_payments"
 poi  = "poi"
 features_list = [poi, feature_1, feature_2]
 data = featureFormat(data_dict, features_list )
 poi, finance_features = targetFeatureSplit( data )
 
+from sklearn.preprocessing import MinMaxScaler
+import numpy as np
+mms = MinMaxScaler()
+mms.fit(finance_features)
+print mms.transform(np.array([2e5, 1e6]).reshape(1,2))
+
+for idx in [0,1]:
+    scale = (max_min_scale[idx][1]-max_min_scale[idx][0])
+    for i in range(len(finance_features)):
+        finance_features[i][idx] = (finance_features[i][idx] - max_min_scale[idx][0])/scale
 
 ### in the "clustering with 3 features" part of the mini-project,
 ### you'll want to change this line to 
@@ -66,7 +98,10 @@ plt.show()
 ### for the data and store them to a list called pred
 
 
-
+from sklearn.cluster import KMeans
+reg = KMeans(n_clusters=2)
+reg.fit(finance_features, poi)
+pred = reg.predict(finance_features)
 
 ### rename the "name" parameter when you change the number of features
 ### so that the figure gets saved to a different file
