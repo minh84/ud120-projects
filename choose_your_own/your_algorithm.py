@@ -31,14 +31,14 @@ plt.ylim(0.0, 1.0)
 ### your code here!  name your classifier object clf if you want the 
 ### visualization code (prettyPicture) to show you the decision boundary
 from sklearn.metrics import accuracy_score
-from sklearn.cluster import KMeans
+from sklearn.neighbors import KNeighborsClassifier
 from sklearn.ensemble import AdaBoostClassifier, RandomForestClassifier
 from sklearn.tree import DecisionTreeClassifier
 
-# clf = KMeans(n_clusters=2, n_init=10)
-clf = AdaBoostClassifier(DecisionTreeClassifier(max_depth=1),
-                         algorithm="SAMME",
-                         n_estimators=200)
+clf = KNeighborsClassifier(n_neighbors=12, weights='distance')
+# clf = AdaBoostClassifier(DecisionTreeClassifier(max_depth=1),
+#                          algorithm="SAMME",
+#                          n_estimators=200)
 
 # clf = RandomForestClassifier(max_depth=None,
 #                              n_estimators=50,
